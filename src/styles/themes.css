@@ -1,0 +1,22 @@
+:root {
+  --paper-bg: #d8d0bc;
+  --paper: #f4eddc;
+  --paper-panel: #f7f1e3;
+  --ink: #172434;
+  --muted-ink: #5f695e;
+  --chart-line: #25364a;
+  --chart-grid: #9a927e;
+  --warning: #8a4b19;
+  --danger: #7a1f1f;
+  --accent-good: #2f5f48;
+}
+
+.eink-frame {
+  --paper-bg: #ffffff;
+  --paper: #ffffff;
+  --paper-panel: #ffffff;
+  --ink: #000000;
+  --muted-ink: #333333;
+  --chart-line: #000000;
+  --chart-grid: #777777;
+}

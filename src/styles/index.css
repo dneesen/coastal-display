@@ -1,0 +1,1158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--ink);
+  background: var(--paper-bg);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.display-frame {
+  width: min(100vw, 177.7778vh);
+  height: min(100vh, 56.25vw);
+  min-width: 960px;
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  padding: clamp(10px, 1.35vmin, 20px);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(23, 36, 52, 0.035), transparent 18%),
+    radial-gradient(circle at 82% 72%, rgba(23, 36, 52, 0.025), transparent 21%),
+    linear-gradient(90deg, rgba(23, 36, 52, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(23, 36, 52, 0.035) 1px, transparent 1px),
+    var(--paper);
+  background-size: 34px 34px;
+  border: clamp(6px, 1vmin, 10px) solid var(--ink);
+}
+
+.display-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(244, 237, 220, 0.42), rgba(244, 237, 220, 0.42)),
+    url("/assets/nautical-map-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.48;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.display-frame > * {
+  position: relative;
+  z-index: 1;
+}
+
+.eink-frame {
+  background: #fff;
+  border-width: clamp(5px, 0.85vmin, 8px);
+  padding: clamp(7px, 0.9vmin, 12px);
+}
+
+.eink-frame::before {
+  opacity: 0.16;
+  filter: grayscale(1) contrast(1.35);
+}
+
+.display-header {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto auto;
+  gap: clamp(10px, 1.2vmin, 18px);
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: clamp(62px, 7.6vmin, 110px);
+  padding: clamp(10px, 1.25vmin, 18px) clamp(16px, 1.9vmin, 28px);
+  border: 2px solid var(--ink);
+  background: rgba(247, 241, 227, 0.76);
+}
+
+.display-header h1,
+.display-header p {
+  margin: 0;
+}
+
+.display-header h1 {
+  font-family: Georgia, Cambria, serif;
+  font-size: clamp(2rem, 4.3vmin, 4.1rem);
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.header-title-block p {
+  margin-top: clamp(4px, 0.6vmin, 8px);
+  font-family: Georgia, Cambria, serif;
+  font-size: clamp(0.95rem, 1.6vmin, 1.55rem);
+  color: var(--ink);
+}
+
+.kicker,
+.panel-heading h2,
+.panel-heading span {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kicker {
+  color: var(--muted-ink);
+  font-size: clamp(0.58rem, 0.9vmin, 0.72rem);
+  font-weight: 700;
+}
+
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px 16px;
+  max-width: 720px;
+  padding: 0;
+  background: transparent;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1rem, 1.55vmin, 1.3rem);
+}
+
+.source-badge {
+  border: 1.5px solid currentColor;
+  padding: 1px 6px;
+  font-weight: 800;
+}
+
+.source-badge.live {
+  color: var(--accent-good);
+}
+
+.source-badge.partial {
+  color: var(--warning);
+}
+
+.source-badge.mock {
+  color: var(--danger);
+}
+
+.source-warning {
+  justify-self: end;
+  border: 2px solid var(--warning);
+  color: var(--warning);
+  padding: 6px 9px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.settings-button,
+.text-button {
+  border: 2px solid var(--ink);
+  background: var(--paper-panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.settings-button {
+  display: inline-grid;
+  width: clamp(42px, 3.6vmin, 56px);
+  height: clamp(42px, 3.6vmin, 56px);
+  place-items: center;
+}
+
+.fullscreen-grid,
+.eink-grid {
+  display: grid;
+  gap: clamp(10px, 1.25vmin, 20px);
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: clamp(10px, 1.25vmin, 20px);
+}
+
+.fullscreen-grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: 1.15fr 1.13fr 0.78fr 0.2fr;
+  grid-template-areas:
+    "hourly hourly hourly hourly hourly hourly tide tide tide tide tide tide"
+    "forecast forecast forecast forecast forecast forecast current current current current current current"
+    "barometer barometer thermometer thermometer wind wind moon moon sea sea sea sea"
+    "alerts alerts alerts alerts alerts alerts alerts alerts alerts alerts alerts alerts";
+}
+
+.eink-grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: 1.15fr 1.13fr 0.78fr 0.2fr;
+  grid-template-areas:
+    "hourly hourly hourly hourly hourly hourly tide tide tide tide tide tide"
+    "forecast forecast forecast forecast forecast forecast current current current current current current"
+    "barometer barometer thermometer thermometer wind wind moon moon sea sea sea sea"
+    "alerts alerts alerts alerts alerts alerts alerts alerts alerts alerts alerts alerts";
+}
+
+.instrument-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: clamp(9px, 1.05vmin, 16px);
+  border: 1.5px solid var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 44%),
+    rgba(247, 241, 227, 0.68);
+  position: relative;
+}
+
+.instrument-panel > :not(.panel-heading) {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.eink-frame .instrument-panel,
+.eink-frame .display-header {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.instrument-panel::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(23, 36, 52, 0.16);
+  pointer-events: none;
+}
+
+.eink-frame .instrument-panel {
+  border-width: 2.5px;
+}
+
+.panel-heading {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: clamp(4px, 0.6vmin, 7px);
+  border-bottom: 1.5px solid rgba(23, 36, 52, 0.82);
+}
+
+.panel-heading h2 {
+  margin: 0 0 4px;
+  font-family: Georgia, Cambria, serif;
+  font-size: clamp(1rem, 1.72vmin, 1.55rem);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.panel-heading span {
+  color: var(--muted-ink);
+  font-size: clamp(0.48rem, 0.72vmin, 0.62rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.instrument-panel[style*="barometer"] .panel-heading h2,
+.instrument-panel[style*="thermometer"] .panel-heading h2,
+.instrument-panel[style*="wind"] .panel-heading h2,
+.instrument-panel[style*="moon"] .panel-heading h2,
+.instrument-panel[style*="sea"] .panel-heading h2,
+.instrument-panel[style*="alerts"] .panel-heading h2 {
+  font-size: clamp(0.82rem, 1.28vmin, 1.14rem);
+}
+
+.instrument-panel[style*="barometer"] .panel-heading,
+.instrument-panel[style*="thermometer"] .panel-heading,
+.instrument-panel[style*="wind"] .panel-heading,
+.instrument-panel[style*="moon"] .panel-heading,
+.instrument-panel[style*="sea"] .panel-heading,
+.instrument-panel[style*="alerts"] .panel-heading {
+  margin-bottom: clamp(2px, 0.35vmin, 5px);
+}
+
+.svg-line,
+.svg-muted,
+.svg-grid,
+.svg-axis,
+.svg-paper,
+.svg-line-fill {
+  stroke: var(--chart-line);
+  vector-effect: non-scaling-stroke;
+}
+
+.svg-line,
+.svg-muted,
+.svg-grid,
+.svg-axis {
+  fill: none;
+}
+
+.svg-muted,
+.svg-grid {
+  opacity: 0.55;
+}
+
+.svg-grid.strong {
+  opacity: 0.9;
+}
+
+.svg-axis {
+  opacity: 0.75;
+  stroke-width: 1.3;
+}
+
+.svg-fill,
+.svg-line-fill {
+  fill: var(--chart-line);
+}
+
+.svg-paper,
+.svg-paper-fill {
+  fill: var(--paper);
+}
+
+.svg-chart-wash {
+  fill: rgba(255, 255, 255, 0.14);
+  stroke: none;
+}
+
+.svg-label {
+  fill: var(--ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 17px;
+}
+
+.chart-event-label {
+  font-size: 14px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: rgba(251, 248, 238, 0.82);
+  stroke-width: 4px;
+}
+
+.svg-cardinal {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.dial-wrap,
+.mini-instrument {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(6px, 0.9vmin, 10px);
+  align-items: center;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+}
+
+.wind-instrument {
+  display: grid;
+  grid-template-columns: minmax(86px, 0.86fr) minmax(0, 1fr);
+  gap: clamp(4px, 0.7vmin, 9px);
+  align-items: center;
+  height: 100%;
+  min-height: 0;
+}
+
+.wind-instrument svg {
+  width: 100%;
+  height: auto;
+  max-height: 132px;
+  display: block;
+}
+
+.compass-outer {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: var(--chart-line);
+  stroke-width: 2.5;
+}
+
+.compass-ring {
+  fill: none;
+  stroke: var(--chart-line);
+  stroke-width: 2;
+}
+
+.compass-point {
+  stroke: var(--chart-line);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.compass-point.major {
+  fill: var(--chart-line);
+}
+
+.compass-point.minor {
+  fill: var(--paper);
+}
+
+.compass-hub-outer {
+  fill: var(--paper);
+  stroke: var(--chart-line);
+  stroke-width: 3;
+}
+
+.compass-cardinal {
+  fill: var(--ink);
+  font-family: Georgia, Cambria, serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.compass-intercardinal {
+  fill: var(--muted-ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.wind-arrow-head {
+  fill: var(--danger);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.wind-arrow-stem {
+  stroke: var(--ink);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.wind-readout strong {
+  display: block;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1.36rem, 2.25vmin, 1.78rem);
+  line-height: 0.98;
+}
+
+.wind-readout span,
+.wind-readout small {
+  display: block;
+  color: var(--muted-ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(0.78rem, 1.12vmin, 0.96rem);
+  margin: 3px 0 0;
+}
+
+.dial-wrap svg,
+.mini-instrument svg,
+.curve-instrument svg {
+  width: 100%;
+  display: block;
+}
+
+.mini-instrument svg {
+  width: min(100%, 94px);
+  max-height: 116px;
+  align-self: center;
+  justify-self: center;
+}
+
+.thermometer-card {
+  grid-template-columns: minmax(0, 1fr) 58px;
+}
+
+.thermometer-card svg {
+  width: 48px;
+}
+
+.moon-card {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+.moon-card svg {
+  width: 72px;
+}
+
+.moon-disk-base {
+  fill: var(--paper);
+  stroke: none;
+}
+
+.moon-disk-lit {
+  fill: var(--ink);
+  stroke: none;
+}
+
+.instrument-readout strong,
+.curve-summary strong {
+  display: block;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1.28rem, 2.12vmin, 1.72rem);
+  line-height: 0.98;
+}
+
+.instrument-readout span,
+.instrument-readout em,
+.curve-summary span,
+.quiet-note {
+  color: var(--muted-ink);
+  font-size: clamp(0.78rem, 1.1vmin, 0.96rem);
+  font-style: normal;
+  line-height: 1.15;
+}
+
+.instrument-readout em {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.barometer-instrument {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(2px, 0.45vmin, 6px);
+  align-items: center;
+  height: 100%;
+  min-height: 0;
+}
+
+.barometer-instrument svg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  justify-self: center;
+  min-height: 0;
+}
+
+.barometer-primary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.barometer-primary strong {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1.34rem, 2.28vmin, 1.78rem);
+  line-height: 1;
+}
+
+.barometer-primary span {
+  color: var(--muted-ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(0.78rem, 1.16vmin, 0.98rem);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.barometer-arc,
+.barometer-inner-arc,
+.barometer-zone,
+.barometer-tick {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.barometer-arc {
+  stroke: var(--chart-line);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.barometer-inner-arc {
+  fill: none;
+  stroke: var(--chart-line);
+  stroke-width: 1.4;
+  opacity: 0.52;
+}
+
+.barometer-zone {
+  stroke-width: 13;
+  stroke-linecap: round;
+  opacity: 0.16;
+}
+
+.rain-zone,
+.fair-zone {
+  stroke: var(--chart-line);
+}
+
+.change-zone {
+  stroke: var(--danger);
+  opacity: 0.22;
+}
+
+.barometer-tick {
+  stroke: var(--chart-line);
+  stroke-linecap: round;
+}
+
+.barometer-scale-label {
+  fill: var(--ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.barometer-zone-label {
+  fill: var(--ink);
+  font-family: Georgia, Cambria, serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.barometer-needle,
+.barometer-ghost-needle {
+  stroke: var(--chart-line);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.barometer-needle {
+  stroke-width: 5;
+}
+
+.barometer-ghost-needle {
+  stroke-width: 3;
+  opacity: 0.34;
+}
+
+.barometer-ghost-24h {
+  stroke-width: 2;
+  opacity: 0.26;
+  stroke-dasharray: 5 4;
+}
+
+.barometer-hub {
+  fill: var(--paper);
+  stroke: var(--chart-line);
+  stroke-width: 3;
+}
+
+.barometer-readout span {
+  color: var(--muted-ink);
+  display: block;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(0.78rem, 1.12vmin, 0.94rem);
+  line-height: 1.12;
+}
+
+.barometer-readout b {
+  color: var(--ink);
+}
+
+.barometer-readout-24h {
+  font-size: clamp(0.7rem, 1vmin, 0.86rem) !important;
+  opacity: 0.82;
+}
+
+.curve-instrument {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.curve-instrument svg {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.curve-summary {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+  gap: 3px 12px;
+  align-items: baseline;
+  margin-top: 2px;
+}
+
+.event-chip {
+  border: 1px solid rgba(23, 36, 52, 0.45);
+  padding: 1px 6px;
+  color: var(--ink) !important;
+  white-space: nowrap;
+}
+
+.unavailable-notice {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-content: center;
+  gap: 5px;
+  padding: 12px;
+  border: 1.5px dashed var(--chart-grid);
+  color: var(--muted-ink);
+  text-align: center;
+}
+
+.unavailable-notice strong {
+  color: var(--ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1.1rem, 1.55vmin, 1.28rem);
+  text-transform: uppercase;
+}
+
+.unavailable-notice span {
+  max-width: 34ch;
+  font-size: clamp(0.88rem, 1.24vmin, 1.06rem);
+}
+
+.paired-instruments {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+}
+
+.sea-state {
+  display: grid;
+  grid-template-columns: minmax(112px, 0.7fr) minmax(0, 1.3fr);
+  gap: clamp(8px, 1vmin, 12px);
+  align-items: center;
+  height: 100%;
+  min-height: 0;
+}
+
+.sea-state-summary {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 4px 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.sea-state-summary strong {
+  display: block;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1.34rem, 2.15vmin, 1.74rem);
+  line-height: 1;
+}
+
+.sea-state-summary span {
+  grid-column: 1 / -1;
+  color: var(--muted-ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(0.76rem, 1.08vmin, 0.94rem);
+}
+
+.wave-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  align-self: start;
+  margin-top: 2px;
+}
+
+.sea-state dl {
+  margin: 0;
+  min-width: 0;
+}
+
+.sea-state div {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px dotted var(--chart-grid);
+}
+
+.sea-state dt {
+  color: var(--muted-ink);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(0.76rem, 1.02vmin, 0.9rem);
+}
+
+.sea-state dd {
+  margin: 0;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(0.82rem, 1.16vmin, 1rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sea-forecast {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.alerts-placard {
+  min-height: 0;
+  height: 100%;
+  padding: clamp(4px, 0.65vmin, 8px);
+  border: 2px solid var(--ink);
+  display: grid;
+  align-content: center;
+  font-size: clamp(0.68rem, 1.05vmin, 0.84rem);
+}
+
+.alerts-ticker {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  border: 0;
+  padding: 0 8px 2px;
+  overflow: hidden;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.alerts-ticker strong {
+  font-family: Georgia, Cambria, serif;
+  font-size: clamp(0.78rem, 1.08vmin, 0.98rem);
+}
+
+.alerts-ticker.quiet span {
+  color: var(--muted-ink);
+  font-size: clamp(0.68rem, 0.95vmin, 0.84rem);
+}
+
+.alerts-ticker.active {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.ticker-window {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-window span {
+  display: inline-block;
+  font-size: clamp(0.72rem, 1.02vmin, 0.9rem);
+}
+
+.alerts-ticker.fullscreen .ticker-window span {
+  animation: ticker-scroll 32s linear infinite;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.alerts-placard.quiet {
+  color: var(--muted-ink);
+  text-align: center;
+}
+
+.alerts-placard.active {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.instrument-panel > .alerts-placard:not(:only-child) {
+  height: auto;
+  min-height: 54px;
+  margin-bottom: 6px;
+  padding: 8px 10px;
+}
+
+.instrument-panel > .alerts-placard:not(:only-child) p {
+  margin: 2px 0 0;
+}
+
+.hourly-strip {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+  height: 100%;
+  border-top: 1px solid rgba(23, 36, 52, 0.24);
+  border-bottom: 1px solid rgba(23, 36, 52, 0.24);
+}
+
+.hourly-cell {
+  min-width: 0;
+  padding: clamp(10px, 1.25vmin, 18px) clamp(8px, 1vmin, 14px);
+  border-right: 1px solid var(--chart-grid);
+  display: grid;
+  grid-template-rows: repeat(5, auto);
+  gap: clamp(8px, 1.05vmin, 15px);
+  align-content: center;
+  font-size: clamp(0.9rem, 1.22vmin, 1.08rem);
+}
+
+.hourly-cell strong,
+.forecast-table th,
+.forecast-table td {
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.hourly-cell strong {
+  font-size: clamp(0.98rem, 1.34vmin, 1.18rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.hourly-temp {
+  display: block;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(2rem, 3.05vmin, 2.7rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.hourly-condition {
+  display: block;
+  color: var(--ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(1rem, 1.38vmin, 1.22rem);
+  font-weight: 700;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hourly-meta {
+  display: block;
+  color: var(--muted-ink);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(0.86rem, 1.18vmin, 1.02rem);
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.hourly-meta b {
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.forecast-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  font-size: clamp(0.9rem, 1.26vmin, 1.05rem);
+}
+
+.forecast-table th,
+.forecast-table td {
+  padding: clamp(2px, 0.45vmin, 5px) 7px;
+  border-bottom: 1px solid var(--chart-grid);
+  text-align: left;
+}
+
+.forecast-table th {
+  width: 64px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(12, 17, 22, 0.45);
+}
+
+.settings-modal {
+  width: min(780px, 100%);
+  max-height: min(780px, 92vh);
+  overflow: auto;
+  padding: 20px;
+  border: 3px solid var(--ink);
+  background: var(--paper);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.text-button {
+  padding: 7px 12px;
+}
+
+.settings-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.settings-form label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted-ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.settings-form input,
+.settings-form select {
+  width: 100%;
+  border: 2px solid var(--ink);
+  background: var(--paper-panel);
+  color: var(--ink);
+  padding: 8px;
+  font-weight: 500;
+  text-transform: none;
+}
+
+.station-lookup {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.station-list {
+  display: grid;
+  gap: 7px;
+}
+
+.station-list button {
+  display: grid;
+  grid-template-columns: 72px 1fr 72px;
+  gap: 10px;
+  align-items: center;
+  border: 1.5px solid var(--ink);
+  background: var(--paper-panel);
+  color: var(--ink);
+  padding: 9px;
+  text-align: left;
+}
+
+.station-list strong {
+  text-transform: uppercase;
+}
+
+.station-list span {
+  min-width: 0;
+}
+
+.station-list small {
+  display: block;
+  color: var(--muted-ink);
+  font-size: 0.76rem;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.station-list em {
+  color: var(--muted-ink);
+  font-style: normal;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  #root {
+    overflow: auto;
+    place-items: start center;
+  }
+
+  .display-frame {
+    width: 100vw;
+    height: auto;
+    min-width: 0;
+    min-height: 100vh;
+    border-width: 6px;
+    padding: 8px;
+    overflow: visible;
+  }
+
+  .display-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .header-meta {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+
+  .fullscreen-grid,
+  .eink-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    grid-template-areas:
+      "hourly"
+      "tide"
+      "current"
+      "forecast"
+      "wind"
+      "barometer"
+      "thermometer"
+      "sea"
+      "moon"
+      "alerts";
+  }
+
+  .paired-instruments,
+  .settings-form {
+    grid-template-columns: 1fr;
+  }
+
+  .dial-wrap,
+  .mini-instrument,
+  .wind-instrument {
+    grid-template-columns: 1fr;
+  }
+
+  .hourly-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(112px, auto));
+    height: auto;
+  }
+
+  .sea-state {
+    grid-template-columns: 1fr;
+  }
+
+  .sea-state-summary {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .mini-instrument svg {
+    width: min(100%, 112px);
+  }
+
+  .thermometer-card,
+  .moon-card {
+    grid-template-columns: 1fr;
+  }
+}
